@@ -50,16 +50,21 @@ struct HomeView: View {
             
             Spacer()
             ZStack {
-                Image(images[currentIndex])
-                      .resizable()
-                      .scaledToFit()
-                      .frame(width: 158 * scale, height: 244 * scale)
-                      .onAppear {
-                          Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { _ in
-                              currentIndex = (currentIndex + 1) % images.count
-                              scale += 0.0005
+                Button {
+                    router.navigate(to: .rockCustom)
+                } label: {
+                    Image(images[currentIndex])
+                          .resizable()
+                          .scaledToFit()
+                          .frame(width: 158 * scale, height: 244 * scale)
+                          .onAppear {
+                              Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { _ in
+                                  currentIndex = (currentIndex + 1) % images.count
+                                  scale += 0.0005
+                              }
                           }
-                      }
+                }
+
             }
             
             Spacer()

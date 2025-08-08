@@ -60,6 +60,7 @@ struct RockCoustomView: View {
             .padding(.horizontal, 22)
             .padding(.top, 21)
         }
+        .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
