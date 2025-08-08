@@ -26,21 +26,27 @@ struct HomeView: View {
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 40) {
-            HStack(spacing: 10) {
-                Image(gradeIconName(for: rockManager?.currentGrade ?? .joyakdol))
+            ZStack {
+                Image(backgroundImageName(for: rockManager?.currentGrade ?? .joyakdol))
                     .resizable()
-                    .frame(width: 32, height: 32)
+                    .ignoresSafeArea(.all)
+                
+                VStack(spacing: 40) {
+            VStack(spacing: 10) {
+                Button {
+                    router.navigate(to: .rockGrade)
+                } label: {
+                    Image(gradeIconName(for: rockManager?.currentGrade ?? .joyakdol))
+                        .resizable()
+                        .frame(width: 32, height: 32)
+                }
                 
                 Text(formatTimeHMS(rockManager?.spentTime ?? 0))
                     .jejudoldamFont(size: ._26, weight: .regular)
                     .fontWeight(.bold)
                     .foregroundColor(ColorSet.black80)
-                
-                Spacer()
             }
             .padding(.top, 60)
-            .padding(.leading, 80)
             .onAppear {
                 // 실제 ModelContext로 RockDataManager 업데이트
                 updateRockManager()
@@ -77,11 +83,13 @@ struct HomeView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 18)
                     .background(ColorSet.rock100)
+                    .cornerRadius(25)
             }
             .padding(.horizontal, 8)
             .padding(.bottom, 40)
+                }
+                .padding()
             }
-            .padding()
         }
         .fullScreenCover(isPresented: $isShowingLockView) {
             LockView { _ in
@@ -98,11 +106,11 @@ struct HomeView: View {
     
     private func gradeIconName(for grade: Grade) -> String {
         switch grade {
-        case .joyakdol: return "icon_joyakdol"
-        case .hawgangam: return "icon_hawgangam"
-        case .jasujeong: return "icon_jasujeong"
-        case .emerald: return "icon_emerald"
-        case .diamond: return "icon_diamond"
+        case .joyakdol: return "joyakdolImage"
+        case .hawgangam: return "hawgangamImage"
+        case .jasujeong: return "jasujeongImage"
+        case .emerald: return "emeraldImage"
+        case .diamond: return "diamondImage"
         }
     }
     
@@ -113,6 +121,16 @@ struct HomeView: View {
         case .jasujeong: return .purple
         case .emerald: return .green
         case .diamond: return .cyan
+        }
+    }
+    
+    private func backgroundImageName(for grade: Grade) -> String {
+        switch grade {
+        case .joyakdol: return "joyakdolBackground"
+        case .hawgangam: return "hawgangamBackground"
+        case .jasujeong: return "jasujeongBackground"
+        case .emerald: return "emeraldBackground"
+        case .diamond: return "diamondBackground"
         }
     }
     

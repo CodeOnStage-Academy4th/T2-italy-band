@@ -32,6 +32,7 @@ struct RouteView: View {
             RockGradeView()
                 .environmentObject(router)
                 .environment(\.modelContext, modelContext)
+                .navigationBarHidden(true)
         case .lock:
             LockView { timeSpent in
             }

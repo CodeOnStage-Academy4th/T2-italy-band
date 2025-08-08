@@ -82,6 +82,8 @@ extension Grade {
 struct RockGradeView: View {
     
     @Query private var rocks: [Rock]
+    @EnvironmentObject var router: AppRouter
+    
     private var currentRock: Rock? {
         rocks.first
     }
@@ -89,8 +91,9 @@ struct RockGradeView: View {
     private let gradeOrder: [Grade] = [.joyakdol, .hawgangam, .jasujeong, .emerald, .diamond]
     
     var body: some View {
-        VStack {
-            let seconds = currentRock?.spentTime ?? 0
+        NavigationView {
+            VStack {
+                let seconds = currentRock?.spentTime ?? 0
             let hours = seconds / 3600
             let grade = Grade.from(spentTime: seconds)
             let progress = grade.progress(for: seconds)
@@ -140,7 +143,20 @@ struct RockGradeView: View {
             
             
         }
-        
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    router.navigateBack()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.black)
+                        .font(.system(size: 18, weight: .medium))
+                }
+            }
+        }
+        }
     }
     
     @ViewBuilder
