@@ -31,9 +31,9 @@ struct HomeView: View {
                     .frame(width: 32, height: 32)
                 
                 Text(formatTimeHMS(spentTime))
-                    .font(.title)
+                    .font(.custom("EF_jejudoldam(OTF)", size: 28))
                     .fontWeight(.bold)
-                    .foregroundColor(.primary)
+                    .foregroundColor(Color("Colors/BlackColors/Black80"))
                 
                 Spacer()
             }
@@ -44,8 +44,8 @@ struct HomeView: View {
             
             ZStack {
                 Circle()
-                    .fill(Color.gray.opacity(0.1))
-                    .stroke(Color.gray.opacity(0.3), lineWidth: 2)
+                    .fill(Color("Colors/BlackColors/Black50").opacity(0.5))
+                    .stroke(Color("Colors/BlackColors/Black60"), lineWidth: 2)
                     .frame(width: 300, height: 300)
             }
             
@@ -55,15 +55,15 @@ struct HomeView: View {
                 isShowingLockView = true
             }) {
                 Text("집중하기")
-                    .font(.title2)
+                    .font(.custom("EF_jejudoldam(OTF)", size: 22))
                     .fontWeight(.bold)
-                    .foregroundColor(.black)
+                    .foregroundColor(Color("Colors/BlackColors/Black80"))
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 18)
                     .background(
                         RoundedRectangle(cornerRadius: 16)
-                            .fill(Color(red: 179/255, green: 202/255, blue: 41/255))
-                            .shadow(color: Color(red: 179/255, green: 202/255, blue: 41/255).opacity(0.3), 
+                            .fill(Color("Colors/RockColors/Rook100"))
+                            .shadow(color: Color("Colors/RockColors/Rook100").opacity(0.3),
                                    radius: 8, x: 0, y: 4)
                     )
             }
