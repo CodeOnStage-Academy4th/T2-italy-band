@@ -17,7 +17,7 @@ struct RockSkinInfo {
 let rockSkinInfoList: [String: RockSkinInfo] = [
     "RockMotion1": RockSkinInfo(
         skin: "RockMotion1/RockMotion1",
-        title: "돌",
+        title: "초또로",
         sup: "이탈리아 출신의 깔끔하고 담백한 매력덩어리 돌"
     ),
     "RockMotion2": RockSkinInfo(

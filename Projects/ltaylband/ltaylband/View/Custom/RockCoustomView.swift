@@ -22,46 +22,44 @@ struct RockCoustomView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            // Pager
             TabView(selection: $pageIndex) {
                 ForEach(Array(skins.enumerated()), id: \.offset) { idx, skin in
                     SelRock(rock: Rock(id: UUID(), spentTime: 0, grade: .joyakdol, skin: skin))
                         .tag(idx)
-//                        .padding(.top, 53)
-//                        .padding(.bottom, 43) 
+                        .padding(.bottom, 43)
                 }
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-            // Custom page control dots
-            HStack(spacing: 8) {
-                ForEach(0..<skins.count, id: \.self) { i in
-                    Circle()
-                        .fill(i == pageIndex ? Color.green.opacity(0.9) : Color.gray.opacity(0.3))
-                        .frame(width: 10, height: 10)
+            .overlay(
+                HStack(spacing: 10) {
+                    ForEach(0..<skins.count, id: \.self) { i in
+                        Circle()
+                            .fill(i == pageIndex ? ColorSet.rock100 : ColorSet.rock50)
+                            .frame(width: 10, height: 10)
+                    }
                 }
-            }
-            .padding(.bottom, 16)
+                .padding(.bottom, 100),
+                alignment: .bottom
+            )
 
-            // Apply button
             Button {
                 applySelectedSkin()
             } label: {
                 Text("적용하기")
+                    .jejudoldamFont(size: ._26, weight: .regular)
                     .foregroundStyle(Color.black)
                     .frame(maxWidth: .infinity)
                     .frame(height: 39)
                     .padding(.vertical, 9)
                     .background(
                         RoundedRectangle(cornerRadius: 18)
-                            .fill(Color.gray)
+                            .fill(ColorSet.rock100)
                     )
             }
-            .padding(.horizontal, 16)
+            .padding(.horizontal, 22)
             .padding(.top, 21)
         }
-        .navigationBarTitle("옷장", displayMode: .inline)
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
@@ -69,8 +67,13 @@ struct RockCoustomView: View {
                     router.navigateToRoot()
                 } label: {
                     Image(systemName: "chevron.left")
-                        .foregroundColor(.black)
+                        .foregroundStyle(ColorSet.black80)
                 }
+            }
+            ToolbarItem(placement: .principal) {
+                Text("옷장")
+                    .jejudoldamFont(size: ._18, weight: .regular)
+                    .foregroundStyle(ColorSet.black80)
             }
         }
         .overlay(
