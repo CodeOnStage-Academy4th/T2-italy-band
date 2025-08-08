@@ -23,7 +23,7 @@ struct LockView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var router: AppRouter
 
-    @Query private var rocks: [Rock]
+    @State private var rockManager: RockDataManager?
 
     // MARK: - Colors
     private let backgroundColor = ColorSet.lockBackground
@@ -35,7 +35,7 @@ struct LockView: View {
     
     // Get images based on selected skin
     private var images: [String] {
-        let skinName = rocks.first?.skin ?? "RockMotion1"
+        let skinName = rockManager?.currentSkin ?? "RockMotion1"
         return (1...10).map { index in
             "\(skinName)/RockMotion\(index)"
         }
@@ -73,6 +73,11 @@ struct LockView: View {
                 : nil
         )
         .onAppear {
+            if rockManager == nil {
+                rockManager = RockDataManager(modelContext: modelContext)
+            } else {
+                rockManager?.updateModelContext(modelContext)
+            }
             startTimer()
         }
         .onDisappear {
@@ -172,30 +177,10 @@ struct LockView: View {
 
     private func saveTimeToRock() {
         let additionalSeconds = Int(elapsedTime)
-
-        if let existingRock = rocks.first {
-
-            existingRock.spentTime += additionalSeconds
-            existingRock.grade = Grade.from(spentTime: existingRock.spentTime)
-        } else {
-            let newRock = Rock(
-                id: UUID(),
-                spentTime: additionalSeconds,
-
-                grade: Grade.from(spentTime: additionalSeconds),
-                skin: "RockMotion1"
-            )
-            modelContext.insert(newRock)
-        }
-        do {
-            try modelContext.save()
-
-        } catch {
-        }
+        rockManager?.updateRockTime(additionalSeconds)
     }
 }
 
 #Preview {
-    LockView { _ in
-    }
+//    LockView()
 }
