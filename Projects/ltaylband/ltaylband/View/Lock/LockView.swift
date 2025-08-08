@@ -36,7 +36,7 @@ struct LockView: View {
     // Get images based on selected skin
     private var images: [String] {
         let skinName = rockManager?.currentSkin ?? "RockMotion1"
-        return (1...10).map { index in
+        return (2...10).map { index in
             "\(skinName)/RockMotion\(index)"
         }
     }
