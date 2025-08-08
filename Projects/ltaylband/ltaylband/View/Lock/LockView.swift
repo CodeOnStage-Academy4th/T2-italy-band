@@ -10,7 +10,6 @@ import SwiftData
 import SwiftUI
 
 struct LockView: View {
-    // MARK: - Properties
     let onTimeComplete: (TimeInterval) -> Void
 
     @State private var dragOffset: CGSize = .zero
@@ -25,7 +24,6 @@ struct LockView: View {
 
     @State private var rockManager: RockDataManager?
 
-    // MARK: - Colors
     private let backgroundColor = ColorSet.lockBackground
     private let textColor = ColorSet.lockText
 
@@ -33,7 +31,6 @@ struct LockView: View {
     @State private var currentIndex = 0
     @State private var scale: CGFloat = 1.0
     
-    // Get images based on selected skin
     private var images: [String] {
         let skinName = rockManager?.currentSkin ?? "RockMotion1"
         return (2...10).map { index in
@@ -85,7 +82,6 @@ struct LockView: View {
         }
     }
 
-    // MARK: - Components
     @ViewBuilder
     private var timerComponent: some View {
         Text(formattedTime)
@@ -181,6 +177,3 @@ struct LockView: View {
     }
 }
 
-#Preview {
-//    LockView()
-}

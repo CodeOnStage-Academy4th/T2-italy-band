@@ -64,7 +64,6 @@ extension Grade {
         return min(max(progressRate, 0.0), 1.0)
     }
     
-    //FIXME: 다이아몬드 다음 레벨이 없어서 남은 시간 계산 처리를 못할 예정(현재는 nil로 반환)
     func remainingHours(from hours: Int) -> Int? {
         guard let next else {
             return nil
@@ -76,9 +75,6 @@ extension Grade {
 }
 
 
-//TODO: 돌멩이의 등급을 나타나는 뷰
-//TODO: Model의 Grade를 이용해서 알아서 불러와서 쓰면 됌.
-//TODO: 이거 어디에 넣을지 안정함.
 struct RockGradeView: View {
     
     @Query private var rocks: [Rock]

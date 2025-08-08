@@ -133,7 +133,6 @@ struct HomeView: View {
         }
     }
     
-    // RockDataManager가 ModelContext를 업데이트할 수 있도록 하는 메서드
     private func updateRockManager() {
         if rockManager == nil {
             rockManager = RockDataManager(modelContext: modelContext)
