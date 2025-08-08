@@ -35,7 +35,7 @@ struct LockView: View {
     
     // Get images based on selected skin
     private var images: [String] {
-        let skinName = rocks.first?.skin ?? "RockMotion4"
+        let skinName = rocks.first?.skin ?? "RockMotion1"
         return (1...10).map { index in
             "\(skinName)/RockMotion\(index)"
         }
