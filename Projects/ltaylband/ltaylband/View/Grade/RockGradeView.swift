@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 extension Grade {
     var range: Range<Int> {
@@ -20,6 +21,21 @@ extension Grade {
             return 144000..<252000
         case .diamond:
             return 252000..<360000
+        }
+    }
+    
+    var imageName: String {
+        switch self {
+        case .joyakdol:
+            return "joyakdolImage"
+        case .hawgangam:
+            return "hawgangamImage"
+        case .jasujeong:
+            return "jasujeongImage"
+        case .emerald:
+            return "emeraldImage"
+        case .diamond:
+            return "diamondImage"
         }
     }
     
@@ -64,25 +80,43 @@ extension Grade {
 //TODO: Model의 Grade를 이용해서 알아서 불러와서 쓰면 됌.
 //TODO: 이거 어디에 넣을지 안정함.
 struct RockGradeView: View {
-    @State private var spentTime: Int = 36000
-    @State private var progress: Float = 0.5
-    @State private var rock = Rock(id: UUID(), name: "이사", spentTime: 36000, grade: .hawgangam, shirt: "shirt", pants: "pants", eyes: "eyes", hat: "hat")
+    // 과거
+//    @State private var spentTime: Int = 36000
+//    @State private var progress: Float = 0.5
+//    @State private var rock = Rock(id: UUID(), name: "이사", spentTime: 36000, grade: .hawgangam, shirt: "shirt", pants: "pants", eyes: "eyes", hat: "hat")
+    
+    
+    //지금
+    @Query private var rocks: [Rock]
+    private var currentRock: Rock? {
+        rocks.first
+    }
     
     private let gradeOrder: [Grade] = [.joyakdol, .hawgangam, .jasujeong, .emerald, .diamond]
     
     var body: some View {
         VStack {
-            let hours = rock.spentTime / 3600
-            let grade = rock.grade
-            let progress = rock.grade.progress(for: rock.spentTime)
-            let remaining = rock.grade.remainingHours(from: hours)
+            // 전
+//            let hours = rock.spentTime / 3600
+//            let grade = rock.grade
+//            let progress = rock.grade.progress(for: rock.spentTime)
+//            let remaining = rock.grade.remainingHours(from: hours)
+//            let nextLevel = nextLevelIndex(from: grade)
+            
+            // 지금
+            let seconds = currentRock?.spentTime ?? 0
+            let hours = seconds / 3600
+            let grade = Grade.from(spentTime: seconds)
+            let progress = grade.progress(for: seconds)
+            let remaining = grade.remainingHours(from: hours)
             let nextLevel = nextLevelIndex(from: grade)
             
             
             
-            Image(systemName: "circle.fill")
+            Image(grade.imageName)
                 .resizable()
-                .frame(width: 131, height: 131)
+                .frame(width: 129, height: 129)
+            // Colors/RockColors/Rook100
                 .foregroundStyle(.gray)
                 .padding(.bottom, 22)
             
@@ -90,10 +124,10 @@ struct RockGradeView: View {
                 .font(.system(size: 22))
                 .padding(.bottom, 21)
             
-            
+            //FIXME: 프로그래스바 색상 수정
             ProgressView(value: progress, total: 1.0)
                 .progressViewStyle(.linear)
-                .tint(.green)
+                .tint(Color("Colors/RockColors/Rook100"))
                 .padding(.horizontal, 26)
                 .padding(.bottom, 22)
             
@@ -120,17 +154,17 @@ struct RockGradeView: View {
             
             
         }
-        .onChange(of: rock.spentTime) {
-        }
+//        .onChange(of: currentRock?.spentTime ?? 0) {
+//        }
         
     }
     
     @ViewBuilder
     private func levelRow(grade: Grade, title: String, rangeText: String) -> some View {
         HStack {
-            Image(systemName: "circle.fill")
+            Image(grade.imageName)
                 .resizable()
-                .frame(width: 48, height: 48)
+                .frame(width: 50, height: 50)
                 .foregroundStyle(.gray)
                 .padding(.trailing, 24)
             
