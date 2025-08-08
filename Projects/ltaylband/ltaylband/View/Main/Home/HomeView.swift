@@ -32,7 +32,7 @@ struct HomeView: View {
                     .ignoresSafeArea(.all)
                 
                 VStack(spacing: 40) {
-            VStack(spacing: 10) {
+            VStack(spacing: 24) {
                 Button {
                     router.navigate(to: .rockGrade)
                 } label: {
@@ -42,7 +42,7 @@ struct HomeView: View {
                 }
                 
                 Text(formatTimeHMS(rockManager?.spentTime ?? 0))
-                    .jejudoldamFont(size: ._26, weight: .regular)
+                    .jejudoldamFont(size: ._40, weight: .regular)
                     .fontWeight(.bold)
                     .foregroundColor(ColorSet.black80)
             }
