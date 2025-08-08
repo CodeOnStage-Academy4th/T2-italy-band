@@ -6,45 +6,50 @@
 //
 
 import SwiftUI
+import SwiftData
+import Combine
 
-//TODO: 정지버튼 누르면 여태까지 진행된 시간 RockModel에 저장
 struct LockView: View {
     // MARK: - Properties
+    let onTimeComplete: (TimeInterval) -> Void
+    
     @State private var dragOffset: CGSize = .zero
     @State private var elapsedTime: TimeInterval = 0
     @State private var isTimerRunning = false
-    @State private var timer: Timer?
+    @State private var timerCancellable: AnyCancellable?
+    
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
+    
+    @Query private var rocks: [Rock]
     
     // MARK: - Colors
     private let backgroundColor = Color(red: 0x1D/255.0, green: 0x1D/255.0, blue: 0x1D/255.0)
     private let textColor = Color.white
     
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                backgroundColor
-                    .ignoresSafeArea(.all)
-                VStack(spacing: 0) {
-                    Spacer()
-                        .frame(height: geometry.size.height * 0.1)
-                    timerComponent
-                    Spacer()
-                        .frame(height: geometry.size.height * 0.08)
-                    rockComponent
-                    Spacer()
-                        .frame(height: geometry.size.height * 0.08)
-                    pauseButtonComponent
-                    Spacer()
-                }
+        ZStack {
+            backgroundColor
+                .ignoresSafeArea(.all)
+            
+            VStack(spacing: 0) {
+                Spacer()
+                    .frame(height: 80)
+                timerComponent
+                Spacer()
+                    .frame(height: 60)
+                rockComponent
+                Spacer()
+                    .frame(height: 60)
+                pauseButtonComponent
+                Spacer()
             }
         }
         .onAppear {
             startTimer()
         }
         .onDisappear {
-            timer?.invalidate()
-            timer = nil
+            stopTimer()
         }
     }
     
@@ -119,27 +124,63 @@ struct LockView: View {
     }
     
     private func startTimer() {
+        guard !isTimerRunning else { return }
+        
         isTimerRunning = true
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-            elapsedTime += 1
-        }
+        timerCancellable = Timer.publish(every: 1.0, on: .main, in: .common)
+            .autoconnect()
+            .sink { _ in
+                elapsedTime += 1
+            }
+    }
+    
+    private func stopTimer() {
+        isTimerRunning = false
+        timerCancellable?.cancel()
+        timerCancellable = nil
     }
     
     private func pauseTimer() {
-        isTimerRunning = false
-        timer?.invalidate()
-        timer = nil
+        stopTimer()
     }
     
     private func pauseTimerAndGoToMain() {
         pauseTimer()
-        
-        // MARK: 시간을 RockModel에 저장하는 로직 추가
-        print("저장된 시간: \(formattedTime) (\(elapsedTime)초)")
+        saveTimeToRock()
+        onTimeComplete(elapsedTime)
         dismiss()
+    }
+    
+    private func saveTimeToRock() {
+        let additionalSeconds = Int(elapsedTime)
+        
+        if let existingRock = rocks.first {
+            
+            existingRock.spentTime += additionalSeconds
+            existingRock.grade = Grade.from(spentTime: existingRock.spentTime)
+        } else {
+            let newRock = Rock(
+                id: UUID(),
+                name: "My Rock",
+                spentTime: additionalSeconds,
+                grade: .joyakdol,
+                shirt: "default",
+                pants: "default", 
+                eyes: "default",
+                hat: "default"
+            )
+            newRock.grade = Grade.from(spentTime: additionalSeconds)
+            modelContext.insert(newRock)
+        }
+        do {
+            try modelContext.save()
+        
+        } catch {
+        }
     }
 }
 
 #Preview {
-    LockView()
+    LockView { _ in
+    }
 }
