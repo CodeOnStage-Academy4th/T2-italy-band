@@ -64,7 +64,6 @@ struct HomeView: View {
                           .onAppear {
                               Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { _ in
                                   currentIndex = (currentIndex + 1) % images.count
-                                  scale += 0.0005
                               }
                           }
                 }
