@@ -7,11 +7,7 @@
 
 import SwiftUI
 
-
-//TODO: 메인의 잠금 버튼 누르면 나오는 뷰
-//TODO: 00:00:00부터 멈춤 누르기 전까지 타이머가 진행되고 정지버튼
 //TODO: 정지버튼 누르면 여태까지 진행된 시간 RockModel에 저장
-
 struct LockView: View {
     // MARK: - Properties
     @State private var dragOffset: CGSize = .zero
@@ -32,14 +28,10 @@ struct LockView: View {
                 VStack(spacing: 0) {
                     Spacer()
                         .frame(height: geometry.size.height * 0.1)
-                    
                     timerComponent
-                    
                     Spacer()
                         .frame(height: geometry.size.height * 0.08)
-                    
                     rockComponent
-                    
                     Spacer()
                         .frame(height: geometry.size.height * 0.08)
                     pauseButtonComponent
@@ -48,7 +40,6 @@ struct LockView: View {
             }
         }
         .onAppear {
-            // 화면이 나타나면 자동으로 타이머 시작
             startTimer()
         }
         .onDisappear {
@@ -100,8 +91,6 @@ struct LockView: View {
             Circle()
                 .fill(Color.gray.opacity(0.3))
                 .frame(width: 101, height: 101)
-            
-            // 항상 일시정지 아이콘 표시 (타이머는 자동 시작되므로)
             HStack(spacing: 13) {
                 RoundedRectangle(cornerRadius: 20)
                     .fill(textColor)
@@ -126,7 +115,6 @@ struct LockView: View {
         withAnimation(.easeInOut(duration: 0.3)) {
             dragOffset = .zero
         }
-        // 드래그로 잠금 해제 시에도 시간 저장하고 메인으로 돌아가기
         pauseTimerAndGoToMain()
     }
     
@@ -148,7 +136,6 @@ struct LockView: View {
         
         // MARK: 시간을 RockModel에 저장하는 로직 추가
         print("저장된 시간: \(formattedTime) (\(elapsedTime)초)")
-        // 메인 화면으로 돌아가기
         dismiss()
     }
 }
