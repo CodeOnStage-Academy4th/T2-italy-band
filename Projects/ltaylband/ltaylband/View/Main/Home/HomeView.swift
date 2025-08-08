@@ -22,6 +22,14 @@ struct HomeView: View {
         Grade.from(spentTime: spentTime)
     }
     
+    @State private var currentIndex = 0
+    @State private var scale: CGFloat = 1.0
+    
+    private var images: [String] {
+        let skinName = rocks.first?.skin ?? "RockMotion1"
+        return ["\(skinName)/RockMotion1"]
+    }
+    
     var body: some View {
         NavigationStack {
             VStack(spacing: 40) {
@@ -43,10 +51,16 @@ struct HomeView: View {
             Spacer()
             
             ZStack {
-                Circle()
-                    .fill(Color("Colors/BlackColors/Black50").opacity(0.5))
-                    .stroke(Color("Colors/BlackColors/Black60"), lineWidth: 2)
-                    .frame(width: 300, height: 300)
+                Image(images[currentIndex])
+                      .resizable()
+                      .scaledToFit()
+                      .frame(width: 158 * scale, height: 244 * scale)
+                      .onAppear {
+                          Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { _ in
+                              currentIndex = (currentIndex + 1) % images.count
+                              scale += 0.0005
+                          }
+                      }
             }
             
             Spacer()
