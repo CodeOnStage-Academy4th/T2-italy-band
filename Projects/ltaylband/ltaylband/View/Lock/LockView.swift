@@ -157,15 +157,10 @@ struct LockView: View {
         } else {
             let newRock = Rock(
                 id: UUID(),
-                name: "My Rock",
                 spentTime: additionalSeconds,
-                grade: .joyakdol,
-                shirt: "default",
-                pants: "default", 
-                eyes: "default",
-                hat: "default"
+                grade: Grade.from(spentTime: additionalSeconds),
+                skin: "RockMotion1"
             )
-            newRock.grade = Grade.from(spentTime: additionalSeconds)
             modelContext.insert(newRock)
         }
         do {
