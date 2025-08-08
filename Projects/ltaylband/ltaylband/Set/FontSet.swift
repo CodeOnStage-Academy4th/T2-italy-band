@@ -1,10 +1,3 @@
-//
-//  FontSet.swift
-//  ltaylband
-//
-//  Created by 광로 on 12/20/24.
-//
-
 import SwiftUI
 
 enum FontSet {
