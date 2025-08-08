@@ -29,13 +29,17 @@ struct LockView: View {
     private let backgroundColor = ColorSet.lockBackground
     private let textColor = ColorSet.lockText
 
-    let images = [
-        "RockMotion1", "RockMotion2", "RockMotion3", "RockMotion4",
-        "RockMotion5", "RockMotion6", "RockMotion7", "RockMotion8",
-        "RockMotion9", "RockMotion10",
-    ]
+
     @State private var currentIndex = 0
     @State private var scale: CGFloat = 1.0
+    
+    // Get images based on selected skin
+    private var images: [String] {
+        let skinName = rocks.first?.skin ?? "RockMotion4"
+        return (1...10).map { index in
+            "\(skinName)/RockMotion\(index)"
+        }
+    }
 
     var body: some View {
         ZStack {
@@ -176,15 +180,11 @@ struct LockView: View {
         } else {
             let newRock = Rock(
                 id: UUID(),
-                name: "My Rock",
                 spentTime: additionalSeconds,
-                grade: .joyakdol,
-                shirt: "default",
-                pants: "default",
-                eyes: "default",
-                hat: "default"
+
+                grade: Grade.from(spentTime: additionalSeconds),
+                skin: "RockMotion1"
             )
-            newRock.grade = Grade.from(spentTime: additionalSeconds)
             modelContext.insert(newRock)
         }
         do {
