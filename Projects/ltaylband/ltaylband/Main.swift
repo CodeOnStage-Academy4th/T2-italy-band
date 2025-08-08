@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct Main: App {
@@ -13,5 +14,6 @@ struct Main: App {
         WindowGroup {
             RootView()
         }
+        .modelContainer(for: Rock.self)
     }
 }

@@ -9,16 +9,22 @@ import SwiftUI
 import SwiftData
 
 struct HomeView: View {
-    @State private var spentTime: Int = 7500
+
+    @Query private var rocks: [Rock]
+    @State private var isShowingLockView = false
+    
+    private var spentTime: Int {
+        rocks.first?.spentTime ?? 0
+    }
     @EnvironmentObject var router: AppRouter
-      
     
     var currentGrade: Grade {
         Grade.from(spentTime: spentTime)
     }
     
     var body: some View {
-        VStack(spacing: 40) {
+        NavigationStack {
+            VStack(spacing: 40) {
             HStack(spacing: 10) {
                 Image(gradeIconName(for: currentGrade))
                     .resizable()
@@ -41,8 +47,6 @@ struct HomeView: View {
                     .fill(Color.gray.opacity(0.1))
                     .stroke(Color.gray.opacity(0.3), lineWidth: 2)
                     .frame(width: 300, height: 300)
-                
-                // TODO: 실제 돌 삽입
             }
             
             Spacer()
@@ -54,8 +58,7 @@ struct HomeView: View {
             .buttonStyle(.borderedProminent)
             
             Button(action: {
-                // TODO: LockView로 네비게이션 구현 필요
-                print("집중하기 버튼 클릭됨")
+                isShowingLockView = true
             }) {
                 Text("집중하기")
                     .font(.title2)
@@ -72,6 +75,12 @@ struct HomeView: View {
             }
             .padding(.horizontal, 8)
             .padding(.bottom, 40)
+            }
+            .padding()
+        }
+        .fullScreenCover(isPresented: $isShowingLockView) {
+            LockView { _ in
+            }
         }
     }
           

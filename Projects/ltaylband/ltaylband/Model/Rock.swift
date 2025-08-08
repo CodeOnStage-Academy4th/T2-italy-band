@@ -13,7 +13,7 @@ final class Rock: Identifiable {
     var id: UUID
     var name: String
     var spentTime: Int
-    
+
     var grade: Grade
     
     var shirt: String
