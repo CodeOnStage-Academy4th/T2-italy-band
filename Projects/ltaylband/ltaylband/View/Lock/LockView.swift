@@ -28,9 +28,9 @@ struct LockView: View {
     private let backgroundColor = Color(red: 0x1D/255.0, green: 0x1D/255.0, blue: 0x1D/255.0)
     private let textColor = Color.white
 
-    let images = ["RockMotion1", "RockMotion2", "RockMotion3", "RockMotion4","RockMotion5","RockMotion6","RockMotion7","RockMotion8","RockMotion9","RockMotion10"]  // 연속재생할 이미지 이름들
-        @State private var currentIndex = 0                     // 현재 보여줄 이미지 인덱스
-        @State private var scale: CGFloat = 1.0                 // 이미지 크기 상태값
+    let images = ["RockMotion1", "RockMotion2", "RockMotion3", "RockMotion4","RockMotion5","RockMotion6","RockMotion7","RockMotion8","RockMotion9","RockMotion10"]
+        @State private var currentIndex = 0
+        @State private var scale: CGFloat = 1.0
 
     
     var body: some View {
@@ -40,15 +40,14 @@ struct LockView: View {
             
             VStack(spacing: 0) {
                 Spacer()
-                    .frame(height: 80)
+                    .frame(height: 0)
                 timerComponent
                 Spacer()
-                    .frame(height: 60)
+                    .frame(height: 120)
                 rockComponent
                 Spacer()
-                    .frame(height: 60)
+                    .frame(height: 90)
                 pauseButtonComponent
-                Spacer()
             }
         }
         .onAppear {

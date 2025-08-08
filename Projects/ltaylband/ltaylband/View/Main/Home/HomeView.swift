@@ -51,12 +51,6 @@ struct HomeView: View {
             
             Spacer()
           
-          // LockView로 이동하는 버튼
-            Button("Lock View로 이동") {
-                router.navigate(to: .lock)
-            }
-            .buttonStyle(.borderedProminent)
-            
             Button(action: {
                 isShowingLockView = true
             }) {
