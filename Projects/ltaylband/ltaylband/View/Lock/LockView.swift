@@ -20,12 +20,18 @@ struct LockView: View {
     
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @EnvironmentObject var router: AppRouter
     
     @Query private var rocks: [Rock]
     
     // MARK: - Colors
     private let backgroundColor = Color(red: 0x1D/255.0, green: 0x1D/255.0, blue: 0x1D/255.0)
     private let textColor = Color.white
+
+    let images = ["RockMotion1", "RockMotion2", "RockMotion3", "RockMotion4","RockMotion5","RockMotion6","RockMotion7","RockMotion8","RockMotion9","RockMotion10"]  // 연속재생할 이미지 이름들
+        @State private var currentIndex = 0                     // 현재 보여줄 이미지 인덱스
+        @State private var scale: CGFloat = 1.0                 // 이미지 크기 상태값
+
     
     var body: some View {
         ZStack {
@@ -66,27 +72,18 @@ struct LockView: View {
     @ViewBuilder
     private var rockComponent: some View {
         ZStack {
-            Image("rock_image")
+          Image(images[currentIndex])
                 .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 320, height: 320)
-                .clipShape(Ellipse())
-                .offset(dragOffset)
-                .gesture(
-                    DragGesture()
-                        .onChanged { value in
-                            dragOffset = value.translation
-                        }
-                        .onEnded { value in
-                            if abs(value.translation.height) > 100 {
-                                handleUnlock()
-                            } else {
-                                withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                                    dragOffset = .zero
-                                }
-                            }
-                        }
-                )
+                .scaledToFit()
+                .frame(width: 150 * scale, height: 150 * scale)  // 스케일 적용
+                .onAppear {
+                    Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { _ in
+                        currentIndex = (currentIndex + 1) % images.count
+                        
+                        scale += 0.0005
+                        
+                    }
+                }
         }
     }
     

@@ -12,7 +12,7 @@ import SwiftData
 struct Main: App {
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            RootView()
         }
         .modelContainer(for: Rock.self)
     }

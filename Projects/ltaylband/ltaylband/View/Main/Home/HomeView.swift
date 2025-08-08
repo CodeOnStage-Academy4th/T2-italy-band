@@ -9,12 +9,14 @@ import SwiftUI
 import SwiftData
 
 struct HomeView: View {
+
     @Query private var rocks: [Rock]
     @State private var isShowingLockView = false
     
     private var spentTime: Int {
         rocks.first?.spentTime ?? 0
     }
+    @EnvironmentObject var router: AppRouter
     
     var currentGrade: Grade {
         Grade.from(spentTime: spentTime)
@@ -48,6 +50,12 @@ struct HomeView: View {
             }
             
             Spacer()
+          
+          // LockView로 이동하는 버튼
+            Button("Lock View로 이동") {
+                router.navigate(to: .lock)
+            }
+            .buttonStyle(.borderedProminent)
             
             Button(action: {
                 isShowingLockView = true
@@ -75,7 +83,7 @@ struct HomeView: View {
             }
         }
     }
-    
+          
     private func formatTimeHMS(_ seconds: Int) -> String {
         let hours = seconds / 3600
         let minutes = (seconds % 3600) / 60
