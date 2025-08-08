@@ -2,7 +2,6 @@ import SwiftUI
 
 enum Route: Hashable {
     case home
-    case rock
     case rockGrade
     case lock
     case rockCustom
