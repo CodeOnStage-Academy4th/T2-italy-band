@@ -80,10 +80,6 @@ extension Grade {
 //TODO: Model의 Grade를 이용해서 알아서 불러와서 쓰면 됌.
 //TODO: 이거 어디에 넣을지 안정함.
 struct RockGradeView: View {
-
-    @State private var spentTime: Int = 36000
-    @State private var progress: Float = 0.5
-    @State private var rock = Rock(id: UUID(), spentTime: 36000, grade: .hawgangam, skin: "RockMotion1")
     
     @Query private var rocks: [Rock]
     private var currentRock: Rock? {
