@@ -17,6 +17,7 @@ struct LockView: View {
     @State private var elapsedTime: TimeInterval = 0
     @State private var isTimerRunning = false
     @State private var timerCancellable: AnyCancellable?
+    @State private var showingEndConfirm = false
     
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
@@ -25,7 +26,7 @@ struct LockView: View {
     @Query private var rocks: [Rock]
     
     // MARK: - Colors
-    private let backgroundColor = Color(red: 0x1D/255.0, green: 0x1D/255.0, blue: 0x1D/255.0)
+    private let backgroundColor = Color(red: 0x49/255.0, green: 0x49/255.0, blue: 0x49/255.0)
     private let textColor = Color.white
 
     let images = ["RockMotion1", "RockMotion2", "RockMotion3", "RockMotion4","RockMotion5","RockMotion6","RockMotion7","RockMotion8","RockMotion9","RockMotion10"]
@@ -50,6 +51,22 @@ struct LockView: View {
                 pauseButtonComponent
             }
         }
+        .overlay(
+            showingEndConfirm ? 
+            EndConfirmView(
+                onContinue: {
+                    // 이어하기: 타이머 재시작 + 모달 닫기
+                    showingEndConfirm = false
+                    startTimer()
+                },
+                onEnd: {
+                    // 종료하기: 시간 누적 + HomeView 이동
+                    showingEndConfirm = false
+                    pauseTimerAndGoToMain()
+                }
+            )
+            : nil
+        )
         .onAppear {
             startTimer()
         }
@@ -74,13 +91,11 @@ struct LockView: View {
           Image(images[currentIndex])
                 .resizable()
                 .scaledToFit()
-                .frame(width: 150 * scale, height: 150 * scale)  // 스케일 적용
+                .frame(width: 158 * scale, height: 244 * scale)
                 .onAppear {
                     Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { _ in
                         currentIndex = (currentIndex + 1) % images.count
-                        
                         scale += 0.0005
-                        
                     }
                 }
         }
@@ -103,7 +118,8 @@ struct LockView: View {
             }
         }
         .onTapGesture {
-            pauseTimerAndGoToMain()
+            pauseTimer()  // 타이머 멈춤
+            showingEndConfirm = true  // 모달 표시
         }
     }
     private var formattedTime: String {
@@ -116,7 +132,8 @@ struct LockView: View {
         withAnimation(.easeInOut(duration: 0.3)) {
             dragOffset = .zero
         }
-        pauseTimerAndGoToMain()
+        pauseTimer()
+        showingEndConfirm = true
     }
     
     private func startTimer() {
