@@ -60,7 +60,7 @@ struct HomeView: View {
                     Image(images[currentIndex])
                           .resizable()
                           .scaledToFit()
-                          .frame(width: 158 * scale, height: 244 * scale)
+                          .frame(width: 300 * scale, height: 400 * scale)
                           .onAppear {
                               Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { _ in
                                   currentIndex = (currentIndex + 1) % images.count
