@@ -11,15 +11,15 @@ enum Grade: String, CaseIterable, Codable {
 extension Grade {
     static func from(spentTime: Int) -> Grade {
         switch spentTime {
-        case 0..<100:
+        case 0..<18000:
             return .joyakdol
-        case 100..<200:
+        case 18000..<72000:
             return .hawgangam
-        case 200..<300:
+        case 72000..<144000:
             return .jasujeong
-        case 300..<400:
+        case 144000..<252000:
             return .emerald
-        case 400..<500:
+        case 252000..<360000:
             return .diamond
         default:
             return .joyakdol
