@@ -8,8 +8,6 @@
 import SwiftData
 import SwiftUI
 
-// TODO: 메인에서 돌멩이 누르면 돌멩이가 커스텀 되도록 하는 뷰
-// TODO: 에셋 불러와서 적용되는지 확인.
 struct RockCoustomView: View {
     @EnvironmentObject var router: AppRouter
     @Environment(\.modelContext) private var modelContext
@@ -93,9 +91,7 @@ struct RockCoustomView: View {
         let selectedSkin = skins[pageIndex]
         rockManager?.updateRockSkin(selectedSkin)
         
-        // UI 업데이트를 위해 강제로 새로고침
         DispatchQueue.main.async {
-            // 적용 완료 후 메인 화면으로 돌아가기
             router.navigateToRoot()
         }
     }

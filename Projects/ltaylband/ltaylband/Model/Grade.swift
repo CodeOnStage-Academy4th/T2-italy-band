@@ -1,12 +1,4 @@
-//
-//  Grade.swift
-//  ltaylband
-//
-//  Created by 김재윤 on 8/8/25.
-//
-
 import Foundation
-
 
 enum Grade: String, CaseIterable, Codable {
     case joyakdol = "조약돌"
@@ -14,12 +6,9 @@ enum Grade: String, CaseIterable, Codable {
     case jasujeong = "자수정"
     case emerald = "에메랄드"
     case diamond = "다이아몬드"
-    
 }
 
 extension Grade {
-    
-    //TODO: 시간 기준 정해야함.
     static func from(spentTime: Int) -> Grade {
         switch spentTime {
         case 0..<100:

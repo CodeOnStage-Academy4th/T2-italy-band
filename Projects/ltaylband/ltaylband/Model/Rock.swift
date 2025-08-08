@@ -1,10 +1,3 @@
-//
-//  Rock.swift
-//  ltaylband
-//
-//  Created by 김재윤 on 8/8/25.
-//
-
 import Foundation
 import SwiftData
 
@@ -50,11 +43,8 @@ let rockSkinInfoList: [String: RockSkinInfo] = [
 @Model
 final class Rock: Identifiable {
     var id: UUID
-
     var spentTime: Int
-
     var grade: Grade
-    
     var skin: String
     
     var title: String {

@@ -13,12 +13,8 @@ import UIKit
 struct Main: App {
     
     init() {
-        print("🎯 Starting font registration...")
         FontSet.registerFonts()
-        print("🎯 Font registration completed")
         
-        // 등록된 폰트 확인
-        print("📱 Available fonts:")
         for family in UIFont.familyNames.sorted() {
             if family.contains("EF") || family.contains("jejudoldam") {
                 print("   - \(family)")
