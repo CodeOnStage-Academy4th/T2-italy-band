@@ -38,7 +38,7 @@ struct HomeView: View {
                 } label: {
                     Image(gradeIconName(for: rockManager?.currentGrade ?? .joyakdol))
                         .resizable()
-                        .frame(width: 32, height: 32)
+                        .frame(width: 42, height: 42)
                 }
                 
                 Text(formatTimeHMS(rockManager?.spentTime ?? 0))
