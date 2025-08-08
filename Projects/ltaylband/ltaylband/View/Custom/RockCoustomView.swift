@@ -10,13 +10,15 @@ import SwiftUI
 // TODO: 메인에서 돌멩이 누르면 돌멩이가 커스텀 되도록 하는 뷰
 // TODO: 에셋 불러와서 적용되는지 확인.
 struct RockCoustomView: View {
+    @EnvironmentObject var router: AppRouter
+    
     var body: some View {
         VStack(spacing: 0) {
-            Circle()
-                .fill(Color.gray)
-                .frame(width: 130, height: 130)
-                .padding(.top, 53)
-                .padding(.bottom, 43)
+            Image("RockMotion1")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 175, height: 175)
+                .padding(.vertical, 20)
             
             ZStack(alignment: .topLeading) {
                 RoundedRectangle(cornerRadius: 20)
@@ -25,7 +27,7 @@ struct RockCoustomView: View {
                     .padding(.horizontal, 21)
                 
                 VStack {
-                    ZStack{
+                    ZStack {
                         Rectangle()
                             .fill(Color.gray)
                             .frame(width: .infinity, height: 57)
@@ -39,7 +41,6 @@ struct RockCoustomView: View {
                                     .frame(width: 43, height: 43)
                             }
                         }
-                        
                     }
                     .padding(.top, 15)
                     .padding(.bottom, 49)
@@ -54,12 +55,43 @@ struct RockCoustomView: View {
                         }
                         .padding(.bottom, 39)
                     }
-                    
                 }
             }
             
+            Button {
+                print("적용")
+                    
+            } label: {
+                Text("적용")
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 39)
+                    .padding(.vertical, 9)
+                    .background(
+                        RoundedRectangle(cornerRadius: 9)
+                            .fill(Color.gray)
+                    )
+            }
+            .padding(.horizontal, 16)
+            .padding(.top, 21)
+            
             Spacer()
         }
+        .navigationBarTitle("돌 꾸미기", displayMode: .inline)
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    router.navigateToRoot()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.black)
+                }
+            }
+        }
+        .overlay(
+            Divider(),
+            alignment: .top
+        )
     }
 }
 
