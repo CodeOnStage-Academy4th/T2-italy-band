@@ -33,6 +33,16 @@ struct Main: App {
         WindowGroup {
             RootView()
         }
-        .modelContainer(for: Rock.self)
+        .modelContainer(createInMemoryModelContainer())
+    }
+    
+    private func createInMemoryModelContainer() -> ModelContainer {
+        do {
+            let schema = Schema([Rock.self])
+            let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+        } catch {
+            fatalError("Could not create ModelContainer: \(error)")
+        }
     }
 }

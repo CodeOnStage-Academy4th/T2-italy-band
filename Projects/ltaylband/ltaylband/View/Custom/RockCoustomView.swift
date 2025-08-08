@@ -13,7 +13,7 @@ import SwiftUI
 struct RockCoustomView: View {
     @EnvironmentObject var router: AppRouter
     @Environment(\.modelContext) private var modelContext
-    @Query private var rocks: [Rock]
+    @State private var rockManager: RockDataManager?
 
     @State private var pageIndex: Int = 0
     private let skins: [String] = [
@@ -39,10 +39,10 @@ struct RockCoustomView: View {
                             .frame(width: 10, height: 10)
                     }
                 }
-                .padding(.bottom, 100),
+                    .padding(.bottom, 100),
                 alignment: .bottom
             )
-
+            
             Button {
                 applySelectedSkin()
             } label: {
@@ -80,16 +80,30 @@ struct RockCoustomView: View {
             Divider(),
             alignment: .top
         )
+        .onAppear {
+            if rockManager == nil {
+                rockManager = RockDataManager(modelContext: modelContext)
+            } else {
+                rockManager?.updateModelContext(modelContext)
+            }
+        }
     }
     
     private func applySelectedSkin() {
         let selectedSkin = skins[pageIndex]
-        if let rock = rocks.first {
-            rock.skin = selectedSkin
-            do { try modelContext.save() } catch { }
+        rockManager?.updateRockSkin(selectedSkin)
+        
+        // UI 업데이트를 위해 강제로 새로고침
+        DispatchQueue.main.async {
+            // 적용 완료 후 메인 화면으로 돌아가기
+            router.navigateToRoot()
         }
     }
 }
+
+
+
+
 
 #Preview {
     RockCoustomView()

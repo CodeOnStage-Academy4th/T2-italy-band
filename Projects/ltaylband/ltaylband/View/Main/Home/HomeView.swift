@@ -10,23 +10,17 @@ import SwiftData
 
 struct HomeView: View {
 
-    @Query private var rocks: [Rock]
+    @Environment(\.modelContext) private var modelContext
     @State private var isShowingLockView = false
+    @State private var rockManager: RockDataManager?
     
-    private var spentTime: Int {
-        rocks.first?.spentTime ?? 0
-    }
     @EnvironmentObject var router: AppRouter
-    
-    var currentGrade: Grade {
-        Grade.from(spentTime: spentTime)
-    }
     
     @State private var currentIndex = 0
     @State private var scale: CGFloat = 1.0
     
     private var images: [String] {
-        let skinName = rocks.first?.skin ?? "RockMotion1"
+        let skinName = rockManager?.currentSkin ?? "RockMotion1"
         return ["\(skinName)/RockMotion1"]
     }
     
@@ -34,11 +28,11 @@ struct HomeView: View {
         NavigationStack {
             VStack(spacing: 40) {
             HStack(spacing: 10) {
-                Image(gradeIconName(for: currentGrade))
+                Image(gradeIconName(for: rockManager?.currentGrade ?? .joyakdol))
                     .resizable()
                     .frame(width: 32, height: 32)
                 
-                Text(formatTimeHMS(spentTime))
+                Text(formatTimeHMS(rockManager?.spentTime ?? 0))
                     .jejudoldamFont(size: ._26, weight: .regular)
                     .fontWeight(.bold)
                     .foregroundColor(ColorSet.black80)
@@ -47,6 +41,10 @@ struct HomeView: View {
             }
             .padding(.top, 60)
             .padding(.leading, 80)
+            .onAppear {
+                // 실제 ModelContext로 RockDataManager 업데이트
+                updateRockManager()
+            }
             
             Spacer()
             ZStack {
@@ -115,6 +113,15 @@ struct HomeView: View {
         case .jasujeong: return .purple
         case .emerald: return .green
         case .diamond: return .cyan
+        }
+    }
+    
+    // RockDataManager가 ModelContext를 업데이트할 수 있도록 하는 메서드
+    private func updateRockManager() {
+        if rockManager == nil {
+            rockManager = RockDataManager(modelContext: modelContext)
+        } else {
+            rockManager?.updateModelContext(modelContext)
         }
     }
     
