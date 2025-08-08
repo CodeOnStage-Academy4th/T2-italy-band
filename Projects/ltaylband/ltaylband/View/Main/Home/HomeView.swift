@@ -22,6 +22,14 @@ struct HomeView: View {
         Grade.from(spentTime: spentTime)
     }
     
+    @State private var currentIndex = 0
+    @State private var scale: CGFloat = 1.0
+    
+    private var images: [String] {
+        let skinName = rocks.first?.skin ?? "RockMotion1"
+        return ["\(skinName)/RockMotion1"]
+    }
+    
     var body: some View {
         NavigationStack {
             VStack(spacing: 40) {
@@ -31,9 +39,9 @@ struct HomeView: View {
                     .frame(width: 32, height: 32)
                 
                 Text(formatTimeHMS(spentTime))
-                    .font(.custom("EF_jejudoldam(OTF)", size: 28))
+                    .jejudoldamFont(size: ._26, weight: .regular)
                     .fontWeight(.bold)
-                    .foregroundColor(Color("Colors/BlackColors/Black80"))
+                    .foregroundColor(ColorSet.black80)
                 
                 Spacer()
             }
@@ -41,12 +49,17 @@ struct HomeView: View {
             .padding(.leading, 80)
             
             Spacer()
-            
             ZStack {
-                Circle()
-                    .fill(Color("Colors/BlackColors/Black50").opacity(0.5))
-                    .stroke(Color("Colors/BlackColors/Black60"), lineWidth: 2)
-                    .frame(width: 300, height: 300)
+                Image(images[currentIndex])
+                      .resizable()
+                      .scaledToFit()
+                      .frame(width: 158 * scale, height: 244 * scale)
+                      .onAppear {
+                          Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { _ in
+                              currentIndex = (currentIndex + 1) % images.count
+                              scale += 0.0005
+                          }
+                      }
             }
             
             Spacer()
@@ -55,17 +68,12 @@ struct HomeView: View {
                 isShowingLockView = true
             }) {
                 Text("집중하기")
-                    .font(.custom("EF_jejudoldam(OTF)", size: 22))
+                    .jejudoldamFont(size: ._22, weight: .regular)
                     .fontWeight(.bold)
-                    .foregroundColor(Color("Colors/BlackColors/Black80"))
+                    .foregroundColor(ColorSet.black80)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 18)
-                    .background(
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(Color("Colors/RockColors/Rook100"))
-                            .shadow(color: Color("Colors/RockColors/Rook100").opacity(0.3),
-                                   radius: 8, x: 0, y: 4)
-                    )
+                    .background(ColorSet.rock100)
             }
             .padding(.horizontal, 8)
             .padding(.bottom, 40)

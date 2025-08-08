@@ -80,13 +80,11 @@ extension Grade {
 //TODO: Model의 Grade를 이용해서 알아서 불러와서 쓰면 됌.
 //TODO: 이거 어디에 넣을지 안정함.
 struct RockGradeView: View {
-    // 과거
-//    @State private var spentTime: Int = 36000
-//    @State private var progress: Float = 0.5
-//    @State private var rock = Rock(id: UUID(), name: "이사", spentTime: 36000, grade: .hawgangam, shirt: "shirt", pants: "pants", eyes: "eyes", hat: "hat")
+
+    @State private var spentTime: Int = 36000
+    @State private var progress: Float = 0.5
+    @State private var rock = Rock(id: UUID(), spentTime: 36000, grade: .hawgangam, skin: "RockMotion1")
     
-    
-    //지금
     @Query private var rocks: [Rock]
     private var currentRock: Rock? {
         rocks.first
@@ -96,14 +94,6 @@ struct RockGradeView: View {
     
     var body: some View {
         VStack {
-            // 전
-//            let hours = rock.spentTime / 3600
-//            let grade = rock.grade
-//            let progress = rock.grade.progress(for: rock.spentTime)
-//            let remaining = rock.grade.remainingHours(from: hours)
-//            let nextLevel = nextLevelIndex(from: grade)
-            
-            // 지금
             let seconds = currentRock?.spentTime ?? 0
             let hours = seconds / 3600
             let grade = Grade.from(spentTime: seconds)
@@ -116,28 +106,28 @@ struct RockGradeView: View {
             Image(grade.imageName)
                 .resizable()
                 .frame(width: 129, height: 129)
-            // Colors/RockColors/Rook100
-                .foregroundStyle(.gray)
                 .padding(.bottom, 22)
             
             Text(grade.rawValue)
-                .font(.system(size: 22))
+                .jejudoldamFont(size: ._22)
+                .foregroundStyle(.black80)
                 .padding(.bottom, 21)
             
-            //FIXME: 프로그래스바 색상 수정
             ProgressView(value: progress, total: 1.0)
                 .progressViewStyle(.linear)
-                .tint(Color("Colors/RockColors/Rook100"))
+                .tint(.rook100)
                 .padding(.horizontal, 26)
                 .padding(.bottom, 22)
             
             if let remain = remaining, let nextLv = nextLevel {
                 Text("\(nextLv)번째 스톤까지 \(remain)시간 남음")
-                    .font(.system(size: 15))
+                    .jejudoldamFont(size: ._15)
+                    .foregroundStyle(.black70)
                     .padding(.bottom, 40)
             } else {
-                Text("최고 레벨 달성!")
-                    .font(.system(size: 15))
+                Text("당신은 모든 돌을 수집하였습니다.")
+                    .jejudoldamFont(size: ._15)
+                    .foregroundStyle(.black70)
                     .padding(.bottom, 40)
             }
             
@@ -146,16 +136,14 @@ struct RockGradeView: View {
                 .padding(.bottom, 32)
             
             
-            levelRow(grade: .joyakdol, title: "Lv1 : 조약돌", rangeText: "0 ~ 5시간")
-            levelRow(grade: .hawgangam, title: "Lv2 : 화강암", rangeText: "5 ~ 20시간")
-            levelRow(grade: .jasujeong, title: "Lv3 : 자수정", rangeText: "20 ~ 40시간")
-            levelRow(grade: .emerald, title: "Lv4 : 에메랄드", rangeText: "40 ~ 70시간")
+            levelRow(grade: .joyakdol, title: "Lv1 : 조약돌", rangeText: "0 ~ 4시간")
+            levelRow(grade: .hawgangam, title: "Lv2 : 화강암", rangeText: "5 ~ 19시간")
+            levelRow(grade: .jasujeong, title: "Lv3 : 자수정", rangeText: "20 ~ 39시간")
+            levelRow(grade: .emerald, title: "Lv4 : 에메랄드", rangeText: "40 ~ 69시간")
             levelRow(grade: .diamond, title: "Lv5 : 다이아몬드", rangeText: "70 ~ 100시간")
             
             
         }
-//        .onChange(of: currentRock?.spentTime ?? 0) {
-//        }
         
     }
     
@@ -165,16 +153,17 @@ struct RockGradeView: View {
             Image(grade.imageName)
                 .resizable()
                 .frame(width: 50, height: 50)
-                .foregroundStyle(.gray)
                 .padding(.trailing, 24)
             
             VStack(alignment: .leading) {
                 Text(title)
-                    .font(.system(size: 17))
+                    .jejudoldamFont(size: ._17)
+                    .foregroundStyle(.black80)
+                    .padding(.bottom, 4)
                 
                 Text(rangeText)
-                    .font(.system(size: 14))
-                    .foregroundStyle(.secondary)
+                    .jejudoldamFont(size: ._14)
+                    .foregroundStyle(.black60)
             }
             
             Spacer()
