@@ -13,14 +13,11 @@ struct EndConfirmView: View {
     
     var body: some View {
         ZStack {
-            // 반투명 배경
             Color.black.opacity(0.4)
                 .ignoresSafeArea()
                 .onTapGesture {
                     onContinue()
                 }
-            
-            // 모달 컨텐츠
             VStack(spacing: 32) {
                 VStack(spacing: 16) {
                     Text("집중을 종료하시겠습니까?")
@@ -37,7 +34,6 @@ struct EndConfirmView: View {
                             .foregroundColor(.gray)
                     }
                 }
-                
                 HStack(spacing: 16) {
                   
                     Button(action: onContinue) {

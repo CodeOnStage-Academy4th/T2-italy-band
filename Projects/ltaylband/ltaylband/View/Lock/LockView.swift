@@ -132,8 +132,8 @@ struct LockView: View {
         withAnimation(.easeInOut(duration: 0.3)) {
             dragOffset = .zero
         }
-        pauseTimer()  // 타이머 멈춤
-        showingEndConfirm = true  // 모달 표시
+        pauseTimer()
+        showingEndConfirm = true
     }
     
     private func startTimer() {
