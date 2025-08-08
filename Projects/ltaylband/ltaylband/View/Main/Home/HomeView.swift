@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-//TODO: MainTimerComponent, RockView
-struct ContentView: View {
+//TODO: 타이머와 잠금버튼 함께 구현
+//TODO: RockView 여기에 들어가야 함.
+struct HomeView: View {
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -21,6 +22,6 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    HomeView()
 }
  
