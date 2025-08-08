@@ -11,10 +11,6 @@ struct RouteView: View {
             HomeView()
                 .environmentObject(router)
                 .environment(\.modelContext, modelContext)
-        case .rock:
-            RockView()
-                .environmentObject(router)
-                .environment(\.modelContext, modelContext)
         case .rockGrade:
             RockGradeView()
                 .environmentObject(router)

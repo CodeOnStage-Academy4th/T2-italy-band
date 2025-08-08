@@ -49,8 +49,6 @@ extension Route: Identifiable {
         switch self {
         case .home:
             return "home"
-        case .rock:
-            return "rock"
         case .rockGrade:
             return "rockGrade"
         case .lock:
@@ -59,4 +57,4 @@ extension Route: Identifiable {
             return "rockCustom"
         }
     }
-} 
+}
