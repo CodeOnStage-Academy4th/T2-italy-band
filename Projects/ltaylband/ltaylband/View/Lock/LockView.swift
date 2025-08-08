@@ -5,40 +5,43 @@
 //  Created by 김재윤 on 8/8/25.
 //
 
-import SwiftUI
-import SwiftData
 import Combine
+import SwiftData
+import SwiftUI
 
 struct LockView: View {
     // MARK: - Properties
     let onTimeComplete: (TimeInterval) -> Void
-    
+
     @State private var dragOffset: CGSize = .zero
     @State private var elapsedTime: TimeInterval = 0
     @State private var isTimerRunning = false
     @State private var timerCancellable: AnyCancellable?
     @State private var showingEndConfirm = false
-    
+
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var router: AppRouter
-    
+
     @Query private var rocks: [Rock]
-    
+
     // MARK: - Colors
-    private let backgroundColor = Color(red: 0x49/255.0, green: 0x49/255.0, blue: 0x49/255.0)
-    private let textColor = Color.white
+    private let backgroundColor = ColorSet.lockBackground
+    private let textColor = ColorSet.lockText
 
-    let images = ["RockMotion1", "RockMotion2", "RockMotion3", "RockMotion4","RockMotion5","RockMotion6","RockMotion7","RockMotion8","RockMotion9","RockMotion10"]
-        @State private var currentIndex = 0
-        @State private var scale: CGFloat = 1.0
+    let images = [
+        "RockMotion1", "RockMotion2", "RockMotion3", "RockMotion4",
+        "RockMotion5", "RockMotion6", "RockMotion7", "RockMotion8",
+        "RockMotion9", "RockMotion10",
+    ]
+    @State private var currentIndex = 0
+    @State private var scale: CGFloat = 1.0
 
-    
     var body: some View {
         ZStack {
             backgroundColor
                 .ignoresSafeArea(.all)
-            
+
             VStack(spacing: 0) {
                 Spacer()
                     .frame(height: 0)
@@ -52,20 +55,18 @@ struct LockView: View {
             }
         }
         .overlay(
-            showingEndConfirm ? 
-            EndConfirmView(
-                onContinue: {
-                    // 이어하기: 타이머 재시작 + 모달 닫기
-                    showingEndConfirm = false
-                    startTimer()
-                },
-                onEnd: {
-                    // 종료하기: 시간 누적 + HomeView 이동
-                    showingEndConfirm = false
-                    pauseTimerAndGoToMain()
-                }
-            )
-            : nil
+            showingEndConfirm
+                ? EndConfirmView(
+                    onContinue: {
+                        showingEndConfirm = false
+                        startTimer()
+                    },
+                    onEnd: {
+                        showingEndConfirm = false
+                        pauseTimerAndGoToMain()
+                    }
+                )
+                : nil
         )
         .onAppear {
             startTimer()
@@ -74,52 +75,53 @@ struct LockView: View {
             stopTimer()
         }
     }
-    
+
     // MARK: - Components
     @ViewBuilder
     private var timerComponent: some View {
         Text(formattedTime)
-            .font(.system(size: 57, weight: .semibold, design: .default))
-            .foregroundColor(textColor)
+            .jejudoldamFont(size: ._57, weight: .regular)
+            .foregroundColor(ColorSet.rock100)
             .tracking(0)
             .multilineTextAlignment(.center)
     }
-    
+
     @ViewBuilder
     private var rockComponent: some View {
         ZStack {
-          Image(images[currentIndex])
+            Image(images[currentIndex])
                 .resizable()
                 .scaledToFit()
                 .frame(width: 158 * scale, height: 244 * scale)
                 .onAppear {
-                    Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { _ in
+                    Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) {
+                        _ in
                         currentIndex = (currentIndex + 1) % images.count
                         scale += 0.0005
                     }
                 }
         }
     }
-    
+
     @ViewBuilder
     private var pauseButtonComponent: some View {
         ZStack {
             Circle()
-                .fill(Color.gray.opacity(0.3))
+                .fill(ColorSet.rock200)
                 .frame(width: 101, height: 101)
             HStack(spacing: 13) {
                 RoundedRectangle(cornerRadius: 20)
-                    .fill(textColor)
+                    .fill(ColorSet.rock100)
                     .frame(width: 16, height: 48)
-                
+
                 RoundedRectangle(cornerRadius: 20)
-                    .fill(textColor)
+                    .fill(ColorSet.rock100)
                     .frame(width: 16, height: 48)
             }
         }
         .onTapGesture {
-            pauseTimer()  // 타이머 멈춤
-            showingEndConfirm = true  // 모달 표시
+            pauseTimer()
+            showingEndConfirm = true 
         }
     }
     private var formattedTime: String {
@@ -135,10 +137,10 @@ struct LockView: View {
         pauseTimer()
         showingEndConfirm = true
     }
-    
+
     private func startTimer() {
         guard !isTimerRunning else { return }
-        
+
         isTimerRunning = true
         timerCancellable = Timer.publish(every: 1.0, on: .main, in: .common)
             .autoconnect()
@@ -146,29 +148,29 @@ struct LockView: View {
                 elapsedTime += 1
             }
     }
-    
+
     private func stopTimer() {
         isTimerRunning = false
         timerCancellable?.cancel()
         timerCancellable = nil
     }
-    
+
     private func pauseTimer() {
         stopTimer()
     }
-    
+
     private func pauseTimerAndGoToMain() {
         pauseTimer()
         saveTimeToRock()
         onTimeComplete(elapsedTime)
         dismiss()
     }
-    
+
     private func saveTimeToRock() {
         let additionalSeconds = Int(elapsedTime)
-        
+
         if let existingRock = rocks.first {
-            
+
             existingRock.spentTime += additionalSeconds
             existingRock.grade = Grade.from(spentTime: existingRock.spentTime)
         } else {
@@ -178,7 +180,7 @@ struct LockView: View {
                 spentTime: additionalSeconds,
                 grade: .joyakdol,
                 shirt: "default",
-                pants: "default", 
+                pants: "default",
                 eyes: "default",
                 hat: "default"
             )
@@ -187,7 +189,7 @@ struct LockView: View {
         }
         do {
             try modelContext.save()
-        
+
         } catch {
         }
     }
