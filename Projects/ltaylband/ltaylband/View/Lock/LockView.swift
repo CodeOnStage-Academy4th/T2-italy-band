@@ -29,9 +29,16 @@ struct LockView: View {
     private let backgroundColor = Color(red: 0x49/255.0, green: 0x49/255.0, blue: 0x49/255.0)
     private let textColor = Color.white
 
-    let images = ["RockMotion1", "RockMotion2", "RockMotion3", "RockMotion4","RockMotion5","RockMotion6","RockMotion7","RockMotion8","RockMotion9","RockMotion10"]
-        @State private var currentIndex = 0
-        @State private var scale: CGFloat = 1.0
+    @State private var currentIndex = 0
+    @State private var scale: CGFloat = 1.0
+    
+    // Get images based on selected skin
+    private var images: [String] {
+        let skinName = rocks.first?.skin ?? "RockMotion1"
+        return (1...10).map { index in
+            "\(skinName)/RockMotion\(index)"
+        }
+    }
 
     
     var body: some View {

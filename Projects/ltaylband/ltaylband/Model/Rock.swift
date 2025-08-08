@@ -50,6 +50,7 @@ let rockSkinInfoList: [String: RockSkinInfo] = [
 @Model
 final class Rock: Identifiable {
     var id: UUID
+
     var spentTime: Int
 
     var grade: Grade

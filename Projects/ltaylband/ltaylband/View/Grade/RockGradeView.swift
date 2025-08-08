@@ -66,7 +66,7 @@ extension Grade {
 struct RockGradeView: View {
     @State private var spentTime: Int = 36000
     @State private var progress: Float = 0.5
-    @State private var rock = Rock(id: UUID(), name: "이사", spentTime: 36000, grade: .hawgangam, shirt: "shirt", pants: "pants", eyes: "eyes", hat: "hat")
+    @State private var rock = Rock(id: UUID(), spentTime: 36000, grade: .hawgangam, skin: "RockMotion1")
     
     private let gradeOrder: [Grade] = [.joyakdol, .hawgangam, .jasujeong, .emerald, .diamond]
     

@@ -28,7 +28,7 @@ struct RockCoustomView: View {
                     SelRock(rock: Rock(id: UUID(), spentTime: 0, grade: .joyakdol, skin: skin))
                         .tag(idx)
 //                        .padding(.top, 53)
-//                        .padding(.bottom, 43)
+//                        .padding(.bottom, 43) 
                 }
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
