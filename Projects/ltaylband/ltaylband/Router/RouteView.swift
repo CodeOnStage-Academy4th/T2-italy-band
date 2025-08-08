@@ -29,8 +29,9 @@ struct RouteView: View {
             RockGradeView()
                 .environmentObject(router)
         case .lock:
-            LockView()
-                .environmentObject(router)
+            LockView { timeSpent in
+            }
+            .environmentObject(router)
         case .rockCustom:
             RockCoustomView()
                 .environmentObject(router)
