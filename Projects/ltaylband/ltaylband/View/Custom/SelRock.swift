@@ -9,15 +9,17 @@ import SwiftUI
 
 struct SelRock: View {
     let rock: Rock
-    
+
     var body: some View {
         VStack(spacing: 0) {
             Text(rock.title)
-                .font(.system(size: 20))
-                .padding(.bottom, 16)
+                .jejudoldamFont(size: ._20, weight: .regular)
+                .foregroundColor(ColorSet.black80)
+                .padding(.bottom, 20)
 
             Text(rock.sup)
-                .font(.system(size: 16))
+                .jejudoldamFont(size: ._16, weight: .regular)
+                .foregroundColor(ColorSet.black60)
                 .padding(.bottom, 40)
 
             Image(rockSkinInfoList[rock.skin]?.skin ?? rock.skin)
